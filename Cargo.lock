@@ -3,5 +3,5 @@
 version = 4
 
 [[package]]
-name = "turing-machine-solver"
+name = "turing-solve"
 version = "0.1.0"
