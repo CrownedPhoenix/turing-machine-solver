@@ -1,3 +1,31 @@
+use clap::{Parser};
+
+#[derive(Parser)]
+#[derive(Debug)]
+#[command(version, about, long_about = None)]
+/// A command line utility for creating a decision
+/// tree for identifying the solution to a game of Turing Machine.
+struct Args {
+    #[arg(short)]
+    a: Option<u8>,
+
+    #[arg(short)]
+    b: Option<u8>,
+
+    #[arg(short)]
+    c: Option<u8>,
+
+    #[arg(short)]
+    d: Option<u8>,
+
+    #[arg(short)]
+    e: Option<u8>,
+    
+    #[arg(short)]
+    f: Option<u8>,
+}
 fn main() {
-    println!("Hello, world!");
+    let args = Args::parse();
+    println!("{:?}", args)
+    // TODO: Do the solve; print out viable possibilities
 }
