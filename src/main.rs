@@ -25,6 +25,7 @@ struct Args {
     f: Option<u8>,
 }
 fn main() {
+    env_logger::init();
     let args = Args::parse();
     // TODO: Do the solve
     for solution in turing_solve(args.a, args.b, args.c, args.d, args.e, args.f) {

@@ -1,6 +1,7 @@
 use super::scenario::constraint::Constraint;
 use crate::scenario::{card::Card, code::Code};
 use itertools::Itertools;
+use log::debug;
 
 #[derive(Clone)]
 pub struct Solution<'a> {
@@ -59,8 +60,18 @@ pub fn turing_solve<'a>(
                         code: [blue, yellow, purple],
                     };
                     if constraint_combo.iter().all(|c| (c.verifier)(&code)) {
+                        debug!(
+                            "{} passed {}",
+                            code,
+                            constraint_combo.iter().map(ToString::to_string).join("; ")
+                        );
                         Some(code)
                     } else {
+                        debug!(
+                            "{} failed {}",
+                            code,
+                            constraint_combo.iter().map(ToString::to_string).join("; ")
+                        );
                         None
                     }
                 })
