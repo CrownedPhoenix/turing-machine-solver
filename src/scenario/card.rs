@@ -64,15 +64,15 @@ impl<'a> TryFrom<u8> for Card<'a> {
             5 => Ok(Card::new(
                 5,
                 [
-                    ("", |code| code.blue() % 2 == 0),
-                    ("", |code| code.blue() % 2 != 0),
+                    ("Blue is even", |code| code.blue() % 2 == 0),
+                    ("Blue is odd", |code| code.blue() % 2 != 0),
                 ],
             )),
             6 => Ok(Card::new(
                 6,
                 [
-                    ("", |code| code.yellow() % 2 == 0),
-                    ("", |code| code.yellow() % 2 != 0),
+                    ("Yellow is even", |code| code.yellow() % 2 == 0),
+                    ("Yellow is odd", |code| code.yellow() % 2 != 0),
                 ],
             )),
             7 => Ok(Card::new(
@@ -85,10 +85,18 @@ impl<'a> TryFrom<u8> for Card<'a> {
             8 => Ok(Card::new(
                 8,
                 [
-                    ("", |code| code.iter().filter(|n: &u8| *n == 1).count() == 0),
-                    ("", |code| code.iter().filter(|n: &u8| *n == 1).count() == 1),
-                    ("", |code| code.iter().filter(|n: &u8| *n == 1).count() == 2),
-                    ("", |code| code.iter().filter(|n: &u8| *n == 1).count() == 3),
+                    ("No 1s", |code| {
+                        code.iter().filter(|n: &u8| *n == 1).count() == 0
+                    }),
+                    ("One 1", |code| {
+                        code.iter().filter(|n: &u8| *n == 1).count() == 1
+                    }),
+                    ("Two 1s", |code| {
+                        code.iter().filter(|n: &u8| *n == 1).count() == 2
+                    }),
+                    ("Three 1s", |code| {
+                        code.iter().filter(|n: &u8| *n == 1).count() == 3
+                    }),
                 ],
             )),
             9 => Ok(Card::new(
@@ -166,13 +174,13 @@ impl<'a> TryFrom<u8> for Card<'a> {
             15 => Ok(Card::new(
                 15,
                 [
-                    ("", |code| {
+                    ("Blue is largest", |code| {
                         code.blue() > code.yellow() && code.blue() > code.purple()
                     }),
-                    ("", |code| {
+                    ("Yellow is largest", |code| {
                         code.yellow() > code.blue() && code.yellow() > code.purple()
                     }),
-                    ("", |code| {
+                    ("Purple is largest", |code| {
                         code.purple() > code.yellow() && code.purple() > code.blue()
                     }),
                 ],
