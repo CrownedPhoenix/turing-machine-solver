@@ -1,6 +1,6 @@
 #[derive(Copy, Clone)]
 pub struct Code {
-    code: [u8; 3],
+    pub(crate) code: [u8; 3],
 }
 
 impl<'a> IntoIterator for &'a Code {

@@ -1,5 +1,5 @@
 use super::scenario::constraint::Constraint;
-use crate::scenario::code::Code;
+use crate::scenario::{card::Card, code::Code};
 use itertools::Itertools;
 
 #[derive(Clone)]
@@ -41,5 +41,40 @@ pub fn turing_solve<'a>(
     e: Option<u8>,
     f: Option<u8>,
 ) -> Vec<Solution<'a>> {
-    vec![]
+    let cards: Vec<Card> = [a, b, c, d, e, f]
+        .iter()
+        .filter_map(|&x| x)
+        .filter_map(|x| Card::try_from(x).ok())
+        .collect();
+    cards
+        .iter()
+        .map(|card| card.constraints.iter())
+        .multi_cartesian_product()
+        .filter_map(|constraint_combo| {
+            let possible_codes: Vec<Code> = (1u8..=5)
+                .cartesian_product(1u8..=5)
+                .cartesian_product(1u8..=5)
+                .filter_map(|((blue, yellow), purple)| {
+                    let code = Code {
+                        code: [blue, yellow, purple],
+                    };
+                    if constraint_combo.iter().all(|c| (c.verifier)(&code)) {
+                        Some(code)
+                    } else {
+                        None
+                    }
+                })
+                .collect();
+            if possible_codes.len() > 1 {
+                return None;
+            }
+            if let Some(code) = possible_codes.first() {
+                return Some(Solution {
+                    code: *code,
+                    constraints: constraint_combo.into_iter().copied().collect(),
+                });
+            }
+            return None;
+        })
+        .collect()
 }
