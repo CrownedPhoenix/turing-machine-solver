@@ -26,7 +26,8 @@ struct Args {
 }
 fn main() {
     let args = Args::parse();
+    // TODO: Do the solve
     for solution in turing_solve(args.a, args.b, args.c, args.d, args.e, args.f) {
-        // TODO: Do the solve; print out viable possibilities
+        println!("{}", solution)
     }
 }
