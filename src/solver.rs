@@ -22,34 +22,74 @@ fn solution_display() {
         code: Code { code: [1, 2, 3] },
         constraints: vec![
             Constraint {
+                card_num: 1,
+                id: 3,
                 name: "foo",
                 verifier: |_| true,
             },
             Constraint {
+                card_num: 2,
+                id: 1,
                 name: "bar",
                 verifier: |_| true,
             },
         ],
     };
-    assert_eq!(solution.to_string(), "(123) with foo; bar")
+    assert_eq!(solution.to_string(), "(123) with (1.3) foo; (2.1) bar")
+}
+
+#[derive(Clone, Copy)]
+pub enum CardOrConstraint {
+    Card(u8),
+    CardConstraint(u8, u8),
+}
+
+#[derive(Clone)]
+struct ConstraintGroup<'a> {
+    constraints: Vec<Constraint<'a>>,
+}
+
+impl<'a> Into<ConstraintGroup<'a>> for Card<'a> {
+    fn into(self) -> ConstraintGroup<'a> {
+        ConstraintGroup {
+            constraints: self.constraints,
+        }
+    }
+}
+impl<'a> Into<ConstraintGroup<'a>> for Constraint<'a> {
+    fn into(self) -> ConstraintGroup<'a> {
+        ConstraintGroup {
+            constraints: vec![self],
+        }
+    }
 }
 
 pub fn turing_solve<'a>(
-    a: Option<u8>,
-    b: Option<u8>,
-    c: Option<u8>,
-    d: Option<u8>,
-    e: Option<u8>,
-    f: Option<u8>,
+    a: Option<CardOrConstraint>,
+    b: Option<CardOrConstraint>,
+    c: Option<CardOrConstraint>,
+    d: Option<CardOrConstraint>,
+    e: Option<CardOrConstraint>,
+    f: Option<CardOrConstraint>,
 ) -> Vec<Solution<'a>> {
-    let cards: Vec<Card> = [a, b, c, d, e, f]
+    let constraint_groups: Vec<ConstraintGroup> = [a, b, c, d, e, f]
         .iter()
-        .filter_map(|&x| x)
-        .filter_map(|x| Card::try_from(x).ok())
+        .filter_map(|x| -> Option<&CardOrConstraint> { x.as_ref() })
+        .filter_map(|x| -> Option<ConstraintGroup> {
+            match *x {
+                CardOrConstraint::Card(num) => Card::try_from(num).map(Card::into).ok(),
+                CardOrConstraint::CardConstraint(card_num, constraint_num) => {
+                    Card::try_from(card_num)
+                        .ok()
+                        .and_then(|card| card.constraints.get(constraint_num as usize).cloned())
+                        .map(Constraint::into)
+                }
+            }
+        })
         .collect();
-    cards
+    constraint_groups
         .iter()
-        .map(|card| card.constraints.iter())
+        .map(|group| group.constraints.iter())
         .multi_cartesian_product()
         .filter_map(|constraint_combo| {
             let possible_codes: Vec<Code> = (1u8..=5)
