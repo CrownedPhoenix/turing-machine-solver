@@ -3,13 +3,13 @@ use itertools::Itertools;
 use crate::scenario::{code::Code, constraint::Constraint};
 
 #[derive(Clone, Debug)]
-pub(crate) struct Card<'a> {
-    pub(crate) constraints: Vec<Constraint<'a>>,
+pub(crate) struct Card {
+    pub(crate) constraints: Vec<Constraint>,
 }
 
-impl<'a> Card<'a> {
+impl Card {
     /// Convenience initializer.
-    fn new<const N: usize>(num: u8, constraints: [(&'a str, fn(&Code) -> bool); N]) -> Self {
+    fn new<const N: usize>(num: u8, constraints: [(&'static str, fn(&Code) -> bool); N]) -> Self {
         Card {
             constraints: constraints
                 .iter()
@@ -25,7 +25,7 @@ impl<'a> Card<'a> {
     }
 }
 
-impl<'a> TryFrom<u8> for Card<'a> {
+impl TryFrom<u8> for Card {
     type Error = &'static str;
 
     fn try_from(value: u8) -> Result<Self, Self::Error> {

@@ -4,12 +4,12 @@ use itertools::Itertools;
 use log::debug;
 
 #[derive(Clone)]
-pub struct Solution<'a> {
+pub struct Solution {
     code: Code,
-    constraints: Vec<Constraint<'a>>,
+    constraints: Vec<Constraint>,
 }
 
-impl<'a> std::fmt::Display for Solution<'a> {
+impl std::fmt::Display for Solution {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let constraints = self.constraints.iter().map(ToString::to_string).join("; ");
         write!(f, "({}) with {constraints}", self.code)
@@ -45,33 +45,33 @@ pub enum CardOrConstraint {
 }
 
 #[derive(Clone)]
-struct ConstraintGroup<'a> {
-    constraints: Vec<Constraint<'a>>,
+struct ConstraintGroup {
+    constraints: Vec<Constraint>,
 }
 
-impl<'a> Into<ConstraintGroup<'a>> for Card<'a> {
-    fn into(self) -> ConstraintGroup<'a> {
+impl Into<ConstraintGroup> for Card {
+    fn into(self) -> ConstraintGroup {
         ConstraintGroup {
             constraints: self.constraints,
         }
     }
 }
-impl<'a> Into<ConstraintGroup<'a>> for Constraint<'a> {
-    fn into(self) -> ConstraintGroup<'a> {
+impl Into<ConstraintGroup> for Constraint {
+    fn into(self) -> ConstraintGroup {
         ConstraintGroup {
             constraints: vec![self],
         }
     }
 }
 
-pub fn turing_solve<'a>(
+pub fn turing_solve(
     a: Option<CardOrConstraint>,
     b: Option<CardOrConstraint>,
     c: Option<CardOrConstraint>,
     d: Option<CardOrConstraint>,
     e: Option<CardOrConstraint>,
     f: Option<CardOrConstraint>,
-) -> Vec<Solution<'a>> {
+) -> Vec<Solution> {
     let constraint_groups: Vec<ConstraintGroup> = [a, b, c, d, e, f]
         .iter()
         .filter_map(|x| -> Option<&CardOrConstraint> { x.as_ref() })

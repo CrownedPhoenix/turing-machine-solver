@@ -3,7 +3,7 @@ pub struct Code {
     pub(crate) code: [u8; 3],
 }
 
-impl<'a> IntoIterator for &'a Code {
+impl IntoIterator for Code {
     type Item = u8;
     // TODO(perf,mem): Implement custom Iterator
     type IntoIter = std::array::IntoIter<u8, 3>;
@@ -20,7 +20,7 @@ impl std::fmt::Display for Code {
 }
 
 impl Code {
-    pub fn iter(&self) -> <&Code as IntoIterator>::IntoIter {
+    pub fn iter(&self) -> <Code as IntoIterator>::IntoIter {
         self.into_iter()
     }
 
