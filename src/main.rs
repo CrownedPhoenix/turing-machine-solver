@@ -8,23 +8,8 @@ use turing_solve::solver::{CardOrConstraint, turing_solve};
 /// A command line utility for creating a decision
 /// tree for identifying the solution to a game of Turing Machine.
 struct Args {
-    #[arg(short)]
-    a: Option<CardOrConstraintArg>,
-
-    #[arg(short)]
-    b: Option<CardOrConstraintArg>,
-
-    #[arg(short)]
-    c: Option<CardOrConstraintArg>,
-
-    #[arg(short)]
-    d: Option<CardOrConstraintArg>,
-
-    #[arg(short)]
-    e: Option<CardOrConstraintArg>,
-
-    #[arg(short)]
-    f: Option<CardOrConstraintArg>,
+    #[arg(help = "Set of constraints to apply (max 6)")]
+    constraints: Vec<CardOrConstraintArg>,
 }
 
 #[derive(Clone)]
@@ -56,29 +41,45 @@ impl FromStr for CardOrConstraintArg {
     }
 }
 
-fn main() {
+fn main() -> Result<(), &'static str> {
     env_logger::init();
     let args = Args::parse();
+    if args.constraints.len() > 6 {
+        return Err("Too many constraints provided");
+    }
     // TODO: Do the solve
     let solutions = turing_solve(
-        args.a.map(CardOrConstraintArg::into),
-        args.b.map(CardOrConstraintArg::into),
-        args.c.map(CardOrConstraintArg::into),
-        args.d.map(CardOrConstraintArg::into),
-        args.e.map(CardOrConstraintArg::into),
-        args.f.map(CardOrConstraintArg::into),
+        args.constraints
+            .get(0)
+            .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into),
+        args.constraints
+            .get(1)
+            .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into),
+        args.constraints
+            .get(2)
+            .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into),
+        args.constraints
+            .get(3)
+            .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into),
+        args.constraints
+            .get(4)
+            .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into),
+        args.constraints
+            .get(5)
+            .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into),
     );
     for solution in solutions {
         println!("{}", solution)
     }
+    Ok(())
 }
 
-impl Into<CardOrConstraint> for CardOrConstraintArg {
+impl Into<CardOrConstraint> for &CardOrConstraintArg {
     fn into(self) -> CardOrConstraint {
         match self {
-            CardOrConstraintArg::Card(num) => CardOrConstraint::Card(num),
+            CardOrConstraintArg::Card(num) => CardOrConstraint::Card(*num),
             CardOrConstraintArg::CardConstraint(card_num, constraint_num) => {
-                CardOrConstraint::CardConstraint(card_num, constraint_num)
+                CardOrConstraint::CardConstraint(*card_num, *constraint_num)
             }
         }
     }
