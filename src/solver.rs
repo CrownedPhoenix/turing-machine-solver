@@ -22,14 +22,12 @@ fn solution_display() {
         code: Code { code: [1, 2, 3] },
         constraints: vec![
             Constraint {
-                card_num: 1,
-                id: 3,
+                id: ConstraintID { card: 1, idx: 3 },
                 name: "foo",
                 verifier: |_| true,
             },
             Constraint {
-                card_num: 2,
-                id: 1,
+                id: ConstraintID { card: 2, idx: 1 },
                 name: "bar",
                 verifier: |_| true,
             },

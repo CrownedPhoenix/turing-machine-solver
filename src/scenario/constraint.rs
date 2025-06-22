@@ -1,16 +1,27 @@
 use crate::scenario::code::Code;
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
+pub(crate) struct ConstraintID {
+    pub(crate) card: u8,
+    pub(crate) idx: u8,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Constraint {
-    pub(crate) card_num: u8,
-    pub(crate) id: u8,
+    pub(crate) id: ConstraintID,
     pub(crate) name: &'static str,
     pub(crate) verifier: fn(code: &Code) -> bool,
 }
 
+impl std::hash::Hash for Constraint {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.id.hash(state);
+    }
+}
+
 impl std::fmt::Display for Constraint {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "({}.{}) {}", self.card_num, self.id, self.name)
+        write!(f, "({}.{}) {}", self.id.card, self.id.idx, self.name)
     }
 }
 
@@ -18,8 +29,7 @@ impl std::fmt::Display for Constraint {
 fn constraint_display() {
     assert_eq!(
         Constraint {
-            card_num: 1,
-            id: 3,
+            id: ConstraintID { card: 1, idx: 1 },
             name: "foo",
             verifier: |_| true
         }

@@ -1,6 +1,9 @@
 use itertools::Itertools;
 
-use crate::scenario::{code::Code, constraint::Constraint};
+use crate::scenario::{
+    code::Code,
+    constraint::{Constraint, ConstraintID},
+};
 
 #[derive(Clone, Debug)]
 pub(crate) struct Card {
@@ -15,8 +18,10 @@ impl Card {
                 .iter()
                 .enumerate()
                 .map(|(idx, (name, verifier))| Constraint {
-                    card_num: num,
-                    id: idx as u8,
+                    id: ConstraintID {
+                        card: num,
+                        idx: idx as u8,
+                    },
                     name: *name,
                     verifier: *verifier,
                 })
