@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use super::scenario::constraint::Constraint;
 use crate::scenario::{card::Card, code::Code};
 use itertools::Itertools;
@@ -6,7 +8,7 @@ use log::debug;
 #[derive(Clone)]
 pub struct Solution {
     code: Code,
-    constraints: Vec<Constraint>,
+    constraints: HashSet<Constraint>,
 }
 
 impl std::fmt::Display for Solution {
@@ -20,7 +22,7 @@ impl std::fmt::Display for Solution {
 fn solution_display() {
     let solution = Solution {
         code: Code { code: [1, 2, 3] },
-        constraints: vec![
+        constraints: [
             Constraint {
                 id: ConstraintID { card: 1, idx: 3 },
                 name: "foo",
@@ -31,7 +33,8 @@ fn solution_display() {
                 name: "bar",
                 verifier: |_| true,
             },
-        ],
+        ]
+        .into(),
     };
     assert_eq!(solution.to_string(), "(123) with (1.3) foo; (2.1) bar")
 }
