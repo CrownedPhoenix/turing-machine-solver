@@ -319,7 +319,8 @@ impl TryFrom<u8> for Card {
                         code.iter().tuple_windows().any(|(a, b)| a < b || a > b)
                     }),
                     ("3 asc/dsc", |code| {
-                        code.iter().is_sorted() || code.iter().rev().is_sorted()
+                        code.iter().tuple_windows().all(|(a, b)| a < b)
+                            || code.iter().tuple_windows().all(|(a, b)| a > b)
                     }),
                 ],
             )),
