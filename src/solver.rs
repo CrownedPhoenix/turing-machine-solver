@@ -7,8 +7,8 @@ use log::debug;
 
 #[derive(Clone)]
 pub struct Solution {
-    code: Code,
-    constraints: HashSet<Constraint>,
+    pub(crate) code: Code,
+    pub(crate) constraints: HashSet<Constraint>,
 }
 
 impl std::fmt::Display for Solution {

@@ -1,7 +1,10 @@
 use clap::Parser;
 use itertools::Itertools;
 use std::str::FromStr;
-use turing_solve::solver::{CardOrConstraint, turing_solve};
+use turing_solve::{
+    guess_sequence_solver::guess_sequences,
+    solver::{CardOrConstraint, turing_solve},
+};
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
@@ -68,9 +71,16 @@ fn main() -> Result<(), &'static str> {
             .get(5)
             .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into),
     );
-    for solution in solutions {
+    for solution in &solutions {
         println!("{}", solution)
     }
+
+    println!();
+    println!("-------------");
+    println!();
+
+    guess_sequences(&solutions);
+
     Ok(())
 }
 
