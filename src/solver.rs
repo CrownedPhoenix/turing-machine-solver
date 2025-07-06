@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 
 use super::scenario::constraint::Constraint;
-use crate::scenario::{card::Card, code::Code, constraint::ConstraintID};
+use crate::scenario::{card::Card, code::Code};
 use itertools::Itertools;
 use log::debug;
 
@@ -23,25 +23,31 @@ impl std::fmt::Display for Solution {
     }
 }
 
-#[test]
-fn solution_display() {
-    let solution = Solution {
-        code: Code { code: [1, 2, 3] },
-        constraints: [
-            Constraint {
-                id: ConstraintID { card: 1, idx: 3 },
-                name: "foo",
-                verifier: |_| true,
-            },
-            Constraint {
-                id: ConstraintID { card: 2, idx: 1 },
-                name: "bar",
-                verifier: |_| true,
-            },
-        ]
-        .into(),
-    };
-    assert_eq!(solution.to_string(), "(123) with (1.3) foo; (2.1) bar")
+#[cfg(test)]
+mod test {
+    use crate::scenario::code::Code;
+    use crate::scenario::constraint::{Constraint, ConstraintID};
+    use crate::solver::Solution;
+    #[test]
+    fn solution_display() {
+        let solution = Solution {
+            code: Code { code: [1, 2, 3] },
+            constraints: [
+                Constraint {
+                    id: ConstraintID { card: 1, idx: 3 },
+                    name: "foo",
+                    verifier: |_| true,
+                },
+                Constraint {
+                    id: ConstraintID { card: 2, idx: 1 },
+                    name: "bar",
+                    verifier: |_| true,
+                },
+            ]
+            .into(),
+        };
+        assert_eq!(solution.to_string(), "(123) with (1.3) foo; (2.1) bar")
+    }
 }
 
 #[derive(Clone, Copy)]
