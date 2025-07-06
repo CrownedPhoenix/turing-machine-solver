@@ -47,7 +47,7 @@ impl std::fmt::Debug for ConstraintID {
 fn constraint_display() {
     assert_eq!(
         Constraint {
-            id: ConstraintID { card: 1, idx: 1 },
+            id: ConstraintID { card: 1, idx: 3 },
             name: "foo",
             verifier: |_| true
         }
