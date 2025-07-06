@@ -2,8 +2,7 @@ use clap::Parser;
 use itertools::Itertools;
 use std::str::FromStr;
 use turing_solve::{
-    guess_sequence::solver::guess_sequences,
-    solver::{CardOrConstraint, turing_solve},
+    guess_sequence::solver::guess_sequence, solver::CardOrConstraint, solver::turing_solve,
 };
 
 #[derive(Parser)]
@@ -79,7 +78,8 @@ fn main() -> Result<(), &'static str> {
     println!("-------------");
     println!();
 
-    guess_sequences(&solutions);
+    let decision_tree = guess_sequence(&solutions);
+    println!("{}", decision_tree);
 
     Ok(())
 }
