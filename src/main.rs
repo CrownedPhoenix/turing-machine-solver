@@ -70,13 +70,12 @@ fn main() -> Result<(), &'static str> {
             .get(5)
             .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into),
     );
+    println!("------ Possible solutions -----\n");
     for solution in &solutions {
         println!("{}", solution)
     }
 
-    println!();
-    println!("-------------");
-    println!();
+    println!("\n------ Decision tree -----\n");
 
     let decision_tree = guess_sequence(&solutions);
     println!("{}", decision_tree);

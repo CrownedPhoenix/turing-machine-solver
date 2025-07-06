@@ -38,53 +38,53 @@ impl TryFrom<u8> for Card {
             1 => Ok(Card::new(
                 1,
                 [
-                    ("Blue = 1", |code| code.blue() == 1),
-                    ("Blue > 1", |code| code.blue() > 1),
+                    ("🔷 = 1", |code| code.blue() == 1),
+                    ("🔷 > 1", |code| code.blue() > 1),
                 ],
             )),
             2 => Ok(Card::new(
                 2,
                 [
-                    ("Blue < 3", |code| code.blue() < 3),
-                    ("Blue = 3", |code| code.blue() == 3),
-                    ("Blue > 3", |code| code.blue() > 3),
+                    ("🔷 < 3", |code| code.blue() < 3),
+                    ("🔷 = 3", |code| code.blue() == 3),
+                    ("🔷 > 3", |code| code.blue() > 3),
                 ],
             )),
             3 => Ok(Card::new(
                 3,
                 [
-                    ("Yellow < 3", |code| code.yellow() < 3),
-                    ("Yellow = 3", |code| code.yellow() == 3),
-                    ("Yellow > 3", |code| code.yellow() > 3),
+                    ("🟨 < 3", |code| code.yellow() < 3),
+                    ("🟨 = 3", |code| code.yellow() == 3),
+                    ("🟨 > 3", |code| code.yellow() > 3),
                 ],
             )),
             4 => Ok(Card::new(
                 4,
                 [
-                    ("Yellow < 4", |code| code.yellow() < 4),
-                    ("Yellow = 4", |code| code.yellow() == 4),
-                    ("Yellow > 4", |code| code.yellow() > 4),
+                    ("🟨 < 4", |code| code.yellow() < 4),
+                    ("🟨 = 4", |code| code.yellow() == 4),
+                    ("🟨 > 4", |code| code.yellow() > 4),
                 ],
             )),
             5 => Ok(Card::new(
                 5,
                 [
-                    ("Blue is even", |code| code.blue() % 2 == 0),
-                    ("Blue is odd", |code| code.blue() % 2 != 0),
+                    ("🔷 is even", |code| code.blue() % 2 == 0),
+                    ("🔷 is odd", |code| code.blue() % 2 != 0),
                 ],
             )),
             6 => Ok(Card::new(
                 6,
                 [
-                    ("Yellow is even", |code| code.yellow() % 2 == 0),
-                    ("Yellow is odd", |code| code.yellow() % 2 != 0),
+                    ("🟨 is even", |code| code.yellow() % 2 == 0),
+                    ("🟨 is odd", |code| code.yellow() % 2 != 0),
                 ],
             )),
             7 => Ok(Card::new(
                 7,
                 [
-                    ("Purple is even", |code| code.purple() % 2 == 0),
-                    ("Purple is odd", |code| code.purple() % 2 != 0),
+                    ("🟣 is even", |code| code.purple() % 2 == 0),
+                    ("🟣 is odd", |code| code.purple() % 2 != 0),
                 ],
             )),
             8 => Ok(Card::new(
@@ -141,37 +141,37 @@ impl TryFrom<u8> for Card {
             11 => Ok(Card::new(
                 11,
                 [
-                    ("Blue < Yellow", |code| code.blue() < code.yellow()),
-                    ("Blue = Yellow", |code| code.blue() == code.yellow()),
-                    ("Blue > Yellow", |code| code.blue() > code.yellow()),
+                    ("🔷 < 🟨", |code| code.blue() < code.yellow()),
+                    ("🔷 = 🟨", |code| code.blue() == code.yellow()),
+                    ("🔷 > 🟨", |code| code.blue() > code.yellow()),
                 ],
             )),
             12 => Ok(Card::new(
                 12,
                 [
-                    ("Blue < Purple", |code| code.blue() < code.purple()),
-                    ("Blue = Purple", |code| code.blue() == code.purple()),
-                    ("Blue > Purple", |code: &Code| code.blue() > code.purple()),
+                    ("🔷 < 🟣", |code| code.blue() < code.purple()),
+                    ("🔷 = 🟣", |code| code.blue() == code.purple()),
+                    ("🔷 > 🟣", |code: &Code| code.blue() > code.purple()),
                 ],
             )),
             13 => Ok(Card::new(
                 13,
                 [
-                    ("Yellow < Purple", |code| code.yellow() < code.purple()),
-                    ("Yellow = Purple", |code| code.yellow() == code.purple()),
-                    ("Yellow > Purple", |code| code.yellow() > code.purple()),
+                    ("🟨 < 🟣", |code| code.yellow() < code.purple()),
+                    ("🟨 = 🟣", |code| code.yellow() == code.purple()),
+                    ("🟨 > 🟣", |code| code.yellow() > code.purple()),
                 ],
             )),
             14 => Ok(Card::new(
                 14,
                 [
-                    ("Blue smallest", |code| {
+                    ("🔷 smallest", |code| {
                         code.blue() < code.yellow() && code.blue() < code.purple()
                     }),
-                    ("Yellow smallest", |code| {
+                    ("🟨 smallest", |code| {
                         code.yellow() < code.blue() && code.yellow() < code.purple()
                     }),
-                    ("Purple smallest", |code| {
+                    ("🟣 smallest", |code| {
                         code.purple() < code.yellow() && code.purple() < code.blue()
                     }),
                 ],
@@ -179,13 +179,13 @@ impl TryFrom<u8> for Card {
             15 => Ok(Card::new(
                 15,
                 [
-                    ("Blue is largest", |code| {
+                    ("🔷 is largest", |code| {
                         code.blue() > code.yellow() && code.blue() > code.purple()
                     }),
-                    ("Yellow is largest", |code| {
+                    ("🟨 is largest", |code| {
                         code.yellow() > code.blue() && code.yellow() > code.purple()
                     }),
-                    ("Purple is largest", |code| {
+                    ("🟣 is largest", |code| {
                         code.purple() > code.yellow() && code.purple() > code.blue()
                     }),
                 ],
@@ -232,9 +232,9 @@ impl TryFrom<u8> for Card {
             19 => Ok(Card::new(
                 19,
                 [
-                    ("Blue + Yellow < 6", |code| code.blue() + code.yellow() < 6),
-                    ("Blue + Yellow = 6", |code| code.blue() + code.yellow() == 6),
-                    ("Blue + Yellow > 6", |code| code.blue() + code.yellow() > 6),
+                    ("🔷 + 🟨 < 6", |code| code.blue() + code.yellow() < 6),
+                    ("🔷 + 🟨 = 6", |code| code.blue() + code.yellow() == 6),
+                    ("🔷 + 🟨 > 6", |code| code.blue() + code.yellow() > 6),
                 ],
             )),
             20 => {
@@ -327,72 +327,72 @@ impl TryFrom<u8> for Card {
             26 => Ok(Card::new(
                 26,
                 [
-                    ("Blue < 3", |code| code.blue() < 3),
-                    ("Yellow < 3", |code| code.yellow() < 3),
-                    ("Purple < 3", |code| code.purple() < 3),
+                    ("🔷 < 3", |code| code.blue() < 3),
+                    ("🟨 < 3", |code| code.yellow() < 3),
+                    ("🟣 < 3", |code| code.purple() < 3),
                 ],
             )),
             27 => Ok(Card::new(
                 27,
                 [
-                    ("Blue < 4", |code| code.blue() < 4),
-                    ("Yellow < 4", |code| code.yellow() < 4),
-                    ("Purple < 4", |code| code.purple() < 4),
+                    ("🔷 < 4", |code| code.blue() < 4),
+                    ("🟨 < 4", |code| code.yellow() < 4),
+                    ("🟣 < 4", |code| code.purple() < 4),
                 ],
             )),
             28 => Ok(Card::new(
                 28,
                 [
-                    ("Blue = 1", |code| code.blue() == 1),
-                    ("Yellow = 1", |code| code.yellow() == 1),
-                    ("Purple = 1", |code| code.purple() == 1),
+                    ("🔷 = 1", |code| code.blue() == 1),
+                    ("🟨 = 1", |code| code.yellow() == 1),
+                    ("🟣 = 1", |code| code.purple() == 1),
                 ],
             )),
             29 => Ok(Card::new(
                 29,
                 [
-                    ("Blue = 1", |code| code.blue() == 3),
-                    ("Yellow = 1", |code| code.yellow() == 3),
-                    ("Purple = 1", |code| code.purple() == 3),
+                    ("🔷 = 1", |code| code.blue() == 3),
+                    ("🟨 = 1", |code| code.yellow() == 3),
+                    ("🟣 = 1", |code| code.purple() == 3),
                 ],
             )),
             30 => Ok(Card::new(
                 30,
                 [
-                    ("Blue = 4", |code| code.blue() == 4),
-                    ("Yellow = 4", |code| code.yellow() == 4),
-                    ("Purple = 4", |code| code.purple() == 4),
+                    ("🔷 = 4", |code| code.blue() == 4),
+                    ("🟨 = 4", |code| code.yellow() == 4),
+                    ("🟣 = 4", |code| code.purple() == 4),
                 ],
             )),
             31 => Ok(Card::new(
                 31,
                 [
-                    ("Blue > 1", |code| code.blue() > 1),
-                    ("Yellow > 1", |code| code.yellow() > 1),
-                    ("Purple > 1", |code| code.purple() > 1),
+                    ("🔷 > 1", |code| code.blue() > 1),
+                    ("🟨 > 1", |code| code.yellow() > 1),
+                    ("🟣 > 1", |code| code.purple() > 1),
                 ],
             )),
             33 => Ok(Card::new(
                 33,
                 [
-                    ("Blue is even", |code| code.blue() % 2 == 0),
-                    ("Blue is odd", |code| code.blue() % 2 != 0),
-                    ("Yellow is even", |code| code.blue() % 2 == 0),
-                    ("Yellow is odd", |code| code.blue() % 2 != 0),
-                    ("Purple is even", |code| code.blue() % 2 == 0),
-                    ("Purple is odd", |code| code.blue() % 2 != 0),
+                    ("🔷 is even", |code| code.blue() % 2 == 0),
+                    ("🔷 is odd", |code| code.blue() % 2 != 0),
+                    ("🟨 is even", |code| code.blue() % 2 == 0),
+                    ("🟨 is odd", |code| code.blue() % 2 != 0),
+                    ("🟣 is even", |code| code.blue() % 2 == 0),
+                    ("🟣 is odd", |code| code.blue() % 2 != 0),
                 ],
             )),
             34 => Ok(Card::new(
                 34,
                 [
-                    ("Blue <= Yellow & Purple", |code| {
+                    ("🔷 <= 🟨 & 🟣", |code| {
                         code.blue() <= code.yellow() && code.blue() <= code.purple()
                     }),
-                    ("Purple <= Blue &Yellow", |code| {
+                    ("🟣 <= 🔷 &🟨", |code| {
                         code.yellow() <= code.blue() && code.yellow() <= code.purple()
                     }),
-                    ("Yellow <= Blue & Purple", |code| {
+                    ("🟨 <= 🔷 & 🟣", |code| {
                         code.purple() <= code.blue() && code.purple() <= code.yellow()
                     }),
                 ],
@@ -400,13 +400,13 @@ impl TryFrom<u8> for Card {
             35 => Ok(Card::new(
                 35,
                 [
-                    ("Blue >= Yellow & Purple", |code| {
+                    ("🔷 >= 🟨 & 🟣", |code| {
                         code.blue() >= code.yellow() && code.blue() >= code.purple()
                     }),
-                    ("Purple >= Blue &Yellow", |code| {
+                    ("🟣 >= 🔷 &🟨", |code| {
                         code.yellow() >= code.blue() && code.yellow() >= code.purple()
                     }),
-                    ("Yellow >= Blue & Purple", |code| {
+                    ("🟨 >= 🔷 & 🟣", |code| {
                         code.purple() >= code.blue() && code.purple() >= code.yellow()
                     }),
                 ],
@@ -422,9 +422,9 @@ impl TryFrom<u8> for Card {
             37 => Ok(Card::new(
                 37,
                 [
-                    ("Blue + Yellow = 4", |code| code.blue() + code.yellow() == 4),
-                    ("Blue + Purple = 4", |code| code.blue() + code.purple() == 4),
-                    ("Yellow + Purple = 4", |code| {
+                    ("🔷 + 🟨 = 4", |code| code.blue() + code.yellow() == 4),
+                    ("🔷 + 🟣 = 4", |code| code.blue() + code.purple() == 4),
+                    ("🟨 + 🟣 = 4", |code| {
                         code.yellow() + code.purple() == 4
                     }),
                 ],
@@ -432,9 +432,9 @@ impl TryFrom<u8> for Card {
             38 => Ok(Card::new(
                 38,
                 [
-                    ("Blue + Yellow = 6", |code| code.blue() + code.yellow() == 6),
-                    ("Blue + Purple = 6", |code| code.blue() + code.purple() == 6),
-                    ("Yellow + Purple = 6", |code| {
+                    ("🔷 + 🟨 = 6", |code| code.blue() + code.yellow() == 6),
+                    ("🔷 + 🟣 = 6", |code| code.blue() + code.purple() == 6),
+                    ("🟨 + 🟣 = 6", |code| {
                         code.yellow() + code.purple() == 6
                     }),
                 ],
@@ -442,61 +442,61 @@ impl TryFrom<u8> for Card {
             39 => Ok(Card::new(
                 39,
                 [
-                    ("Blue = 1", |code| code.blue() == 1),
-                    ("Blue > 1", |code| code.blue() > 1),
-                    ("Yellow = 1", |code| code.yellow() == 1),
-                    ("Yellow > 1", |code| code.yellow() > 1),
-                    ("Purple = 1", |code| code.purple() == 1),
-                    ("Purple > 1", |code| code.purple() > 1),
+                    ("🔷 = 1", |code| code.blue() == 1),
+                    ("🔷 > 1", |code| code.blue() > 1),
+                    ("🟨 = 1", |code| code.yellow() == 1),
+                    ("🟨 > 1", |code| code.yellow() > 1),
+                    ("🟣 = 1", |code| code.purple() == 1),
+                    ("🟣 > 1", |code| code.purple() > 1),
                 ],
             )),
             40 => Ok(Card::new(
                 40,
                 [
-                    ("Blue < 3", |code| code.blue() < 3),
-                    ("Blue = 3", |code| code.blue() == 3),
-                    ("Blue > 3", |code| code.blue() > 3),
-                    ("Yellow < 3", |code| code.yellow() < 3),
-                    ("Yellow = 3", |code| code.yellow() == 3),
-                    ("Yellow > 3", |code| code.yellow() > 3),
-                    ("Purple < 3", |code| code.purple() < 3),
-                    ("Purple = 3", |code| code.purple() == 3),
-                    ("Purple > 3", |code| code.purple() > 3),
+                    ("🔷 < 3", |code| code.blue() < 3),
+                    ("🔷 = 3", |code| code.blue() == 3),
+                    ("🔷 > 3", |code| code.blue() > 3),
+                    ("🟨 < 3", |code| code.yellow() < 3),
+                    ("🟨 = 3", |code| code.yellow() == 3),
+                    ("🟨 > 3", |code| code.yellow() > 3),
+                    ("🟣 < 3", |code| code.purple() < 3),
+                    ("🟣 = 3", |code| code.purple() == 3),
+                    ("🟣 > 3", |code| code.purple() > 3),
                 ],
             )),
             41 => Ok(Card::new(
                 41,
                 [
-                    ("Blue < 4", |code| code.blue() < 4),
-                    ("Blue = 4", |code| code.blue() == 4),
-                    ("Blue > 4", |code| code.blue() > 4),
-                    ("Yellow < 4", |code| code.yellow() < 4),
-                    ("Yellow = 4", |code| code.yellow() == 4),
-                    ("Yellow > 4", |code| code.yellow() > 4),
-                    ("Purple < 4", |code| code.purple() < 4),
-                    ("Purple = 4", |code| code.purple() == 4),
-                    ("Purple > 4", |code| code.purple() > 4),
+                    ("🔷 < 4", |code| code.blue() < 4),
+                    ("🔷 = 4", |code| code.blue() == 4),
+                    ("🔷 > 4", |code| code.blue() > 4),
+                    ("🟨 < 4", |code| code.yellow() < 4),
+                    ("🟨 = 4", |code| code.yellow() == 4),
+                    ("🟨 > 4", |code| code.yellow() > 4),
+                    ("🟣 < 4", |code| code.purple() < 4),
+                    ("🟣 = 4", |code| code.purple() == 4),
+                    ("🟣 > 4", |code| code.purple() > 4),
                 ],
             )),
             42 => Ok(Card::new(
                 42,
                 [
-                    ("Blue smallest", |code| {
+                    ("🔷 smallest", |code| {
                         code.blue() < code.yellow() && code.blue() < code.purple()
                     }),
-                    ("Yellow smallest", |code| {
+                    ("🟨 smallest", |code| {
                         code.yellow() < code.blue() && code.yellow() < code.purple()
                     }),
-                    ("Purple smallest", |code| {
+                    ("🟣 smallest", |code| {
                         code.purple() < code.yellow() && code.purple() < code.blue()
                     }),
-                    ("Blue largest", |code| {
+                    ("🔷 largest", |code| {
                         code.blue() > code.yellow() && code.blue() > code.purple()
                     }),
-                    ("Yellow largest", |code| {
+                    ("🟨 largest", |code| {
                         code.yellow() > code.blue() && code.yellow() > code.purple()
                     }),
-                    ("Purple largest", |code| {
+                    ("🟣 largest", |code| {
                         code.purple() > code.yellow() && code.purple() > code.blue()
                     }),
                 ],
@@ -504,23 +504,23 @@ impl TryFrom<u8> for Card {
             43 => Ok(Card::new(
                 43,
                 [
-                    ("Blue < Yellow", |code| code.blue() < code.yellow()),
-                    ("Blue = Yellow", |code| code.blue() == code.yellow()),
-                    ("Blue > Yellow", |code| code.blue() > code.yellow()),
-                    ("Blue < Purple", |code| code.blue() < code.purple()),
-                    ("Blue = Purple", |code| code.blue() == code.purple()),
-                    ("Blue > Purple", |code: &Code| code.blue() > code.purple()),
+                    ("🔷 < 🟨", |code| code.blue() < code.yellow()),
+                    ("🔷 = 🟨", |code| code.blue() == code.yellow()),
+                    ("🔷 > 🟨", |code| code.blue() > code.yellow()),
+                    ("🔷 < 🟣", |code| code.blue() < code.purple()),
+                    ("🔷 = 🟣", |code| code.blue() == code.purple()),
+                    ("🔷 > 🟣", |code: &Code| code.blue() > code.purple()),
                 ],
             )),
             44 => Ok(Card::new(
                 44,
                 [
-                    ("Yellow < Blue", |code| code.yellow() < code.blue()),
-                    ("Yellow = Blue", |code| code.yellow() == code.blue()),
-                    ("Yellow > Blue", |code| code.yellow() > code.blue()),
-                    ("Yellow < Purple", |code| code.yellow() < code.purple()),
-                    ("Yellow = Purple", |code| code.yellow() == code.purple()),
-                    ("Yellow > Purple", |code: &Code| {
+                    ("🟨 < 🔷", |code| code.yellow() < code.blue()),
+                    ("🟨 = 🔷", |code| code.yellow() == code.blue()),
+                    ("🟨 > 🔷", |code| code.yellow() > code.blue()),
+                    ("🟨 < 🟣", |code| code.yellow() < code.purple()),
+                    ("🟨 = 🟣", |code| code.yellow() == code.purple()),
+                    ("🟨 > 🟣", |code: &Code| {
                         code.yellow() > code.purple()
                     }),
                 ],
@@ -597,15 +597,15 @@ impl TryFrom<u8> for Card {
             48 => Ok(Card::new(
                 48,
                 [
-                    ("Blue < Yellow", |code| code.blue() < code.yellow()),
-                    ("Blue = Yellow", |code| code.blue() == code.yellow()),
-                    ("Blue > Yellow", |code| code.blue() > code.yellow()),
-                    ("Blue < Purple", |code| code.blue() < code.purple()),
-                    ("Blue = Purple", |code| code.blue() == code.purple()),
-                    ("Blue > Purple", |code: &Code| code.blue() > code.purple()),
-                    ("Yellow < Purple", |code| code.yellow() < code.purple()),
-                    ("Yellow = Purple", |code| code.yellow() == code.purple()),
-                    ("Yellow > Purple", |code| code.yellow() > code.purple()),
+                    ("🔷 < 🟨", |code| code.blue() < code.yellow()),
+                    ("🔷 = 🟨", |code| code.blue() == code.yellow()),
+                    ("🔷 > 🟨", |code| code.blue() > code.yellow()),
+                    ("🔷 < 🟣", |code| code.blue() < code.purple()),
+                    ("🔷 = 🟣", |code| code.blue() == code.purple()),
+                    ("🔷 > 🟣", |code: &Code| code.blue() > code.purple()),
+                    ("🟨 < 🟣", |code| code.yellow() < code.purple()),
+                    ("🟨 = 🟣", |code| code.yellow() == code.purple()),
+                    ("🟨 > 🟣", |code| code.yellow() > code.purple()),
                 ],
             )),
             _ => Err("No mapping for specified card number."),
