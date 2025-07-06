@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 
 use super::scenario::constraint::Constraint;
-use crate::scenario::{card::Card, code::Code};
+use crate::scenario::{card::Card, code::Code, constraint::ConstraintID};
 use itertools::Itertools;
 use log::debug;
 
