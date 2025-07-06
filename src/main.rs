@@ -2,7 +2,7 @@ use clap::Parser;
 use itertools::Itertools;
 use std::str::FromStr;
 use turing_solve::{
-    guess_sequence_solver::guess_sequences,
+    guess_sequence::solver::guess_sequences,
     solver::{CardOrConstraint, turing_solve},
 };
 
