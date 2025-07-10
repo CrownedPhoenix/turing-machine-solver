@@ -313,10 +313,10 @@ impl TryFrom<u8> for Card {
                 25,
                 [
                     ("No sequence asc/dsc", |code| {
-                        code.iter().tuple_windows().all(|(a, b)| !(a < b || a > b))
+                        code.iter().tuple_windows().all(|(a, b)| a != b)
                     }),
                     ("2 asc/dsc", |code| {
-                        code.iter().tuple_windows().any(|(a, b)| a < b || a > b)
+                        code.iter().tuple_windows().filter(|(a, b)| a != b).count() == 1
                     }),
                     ("3 asc/dsc", |code| {
                         code.iter().tuple_windows().all(|(a, b)| a < b)
@@ -376,11 +376,11 @@ impl TryFrom<u8> for Card {
                 33,
                 [
                     ("🔷 is even", |code| code.blue() % 2 == 0),
+                    ("🟨 is even", |code| code.yellow() % 2 == 0),
+                    ("🟣 is even", |code| code.purple() % 2 == 0),
                     ("🔷 is odd", |code| code.blue() % 2 != 0),
-                    ("🟨 is even", |code| code.blue() % 2 == 0),
-                    ("🟨 is odd", |code| code.blue() % 2 != 0),
-                    ("🟣 is even", |code| code.blue() % 2 == 0),
-                    ("🟣 is odd", |code| code.blue() % 2 != 0),
+                    ("🟨 is odd", |code| code.yellow() % 2 != 0),
+                    ("🟣 is odd", |code| code.purple() % 2 != 0),
                 ],
             )),
             34 => Ok(Card::new(
@@ -520,9 +520,7 @@ impl TryFrom<u8> for Card {
                     ("🟨 > 🔷", |code| code.yellow() > code.blue()),
                     ("🟨 < 🟣", |code| code.yellow() < code.purple()),
                     ("🟨 = 🟣", |code| code.yellow() == code.purple()),
-                    ("🟨 > 🟣", |code: &Code| {
-                        code.yellow() > code.purple()
-                    }),
+                    ("🟨 > 🟣", |code| code.yellow() > code.purple()),
                 ],
             )),
             45 => Ok(Card::new(
