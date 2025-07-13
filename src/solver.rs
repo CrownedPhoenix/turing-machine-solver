@@ -77,16 +77,9 @@ impl Into<ConstraintGroup> for Constraint {
 }
 
 pub fn turing_solve(
-    a: Option<CardOrConstraint>,
-    b: Option<CardOrConstraint>,
-    c: Option<CardOrConstraint>,
-    d: Option<CardOrConstraint>,
-    e: Option<CardOrConstraint>,
-    f: Option<CardOrConstraint>,
+    constraints: Vec<CardOrConstraint>
 ) -> Vec<Solution> {
-    let constraint_groups: Vec<ConstraintGroup> = [a, b, c, d, e, f]
-        .iter()
-        .filter_map(|x| -> Option<&CardOrConstraint> { x.as_ref() })
+    let constraint_groups: Vec<ConstraintGroup> = constraints.iter()
         .filter_map(|x| -> Option<ConstraintGroup> {
             match *x {
                 CardOrConstraint::Card(num) => Card::try_from(num).map(Card::into).ok(),

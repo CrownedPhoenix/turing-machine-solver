@@ -51,6 +51,7 @@ fn main() -> Result<(), &'static str> {
     }
     // TODO: Do the solve
     let solutions = turing_solve(
+        vec![
         args.constraints
             .get(0)
             .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into),
@@ -68,7 +69,8 @@ fn main() -> Result<(), &'static str> {
             .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into),
         args.constraints
             .get(5)
-            .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into),
+            .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into)
+        ].iter().filter_map(|e| *e).collect_vec()
     );
     println!("------ Possible solutions -----\n");
     for solution in &solutions {
