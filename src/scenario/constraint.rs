@@ -1,15 +1,15 @@
 use crate::scenario::code::Code;
 
 #[derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub(crate) struct ConstraintID {
-    pub(crate) card: u8,
-    pub(crate) idx: u8,
+pub struct ConstraintID {
+    pub card: u8,
+    pub idx: u8,
 }
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub struct Constraint {
-    pub(crate) id: ConstraintID,
-    pub(crate) name: &'static str,
+    pub id: ConstraintID,
+    pub name: &'static str,
     pub(crate) verifier: fn(code: &Code) -> bool,
 }
 

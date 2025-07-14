@@ -1,6 +1,6 @@
 use clap::Parser;
 use itertools::Itertools;
-use std::str::FromStr;
+use std::{collections::HashSet, str::FromStr};
 use turing_solve::{
     guess_sequence::solver::guess_sequence,
     solver::{Constraint, constraints_for_card, turing_solve},
@@ -18,7 +18,11 @@ struct Args {
 #[derive(Clone)]
 pub enum CardOrConstraintArg {
     Card(u8),
-    CardConstraint(u8, u8),
+    CardConstraint {
+        inverted: bool,
+        card_num: u8,
+        id: u8,
+    },
 }
 
 impl FromStr for CardOrConstraintArg {
@@ -30,16 +34,18 @@ impl FromStr for CardOrConstraintArg {
             let Some(split): Option<(&str, &str)> = s.split(".").collect_tuple() else {
                 return Err("");
             };
-            let Ok(card_num) = u8::from_str(split.0) else {
+            let inverted = split.0.starts_with('^');
+            let Ok(card_num) = u8::from_str(if inverted { &split.0[1..] } else { split.0 }) else {
                 return Err("");
             };
             let Ok(constraint_num) = u8::from_str(split.1) else {
                 return Err("");
             };
-            Ok(CardOrConstraintArg::CardConstraint(
-                card_num,
-                constraint_num,
-            ))
+            Ok(CardOrConstraintArg::CardConstraint {
+                inverted: inverted,
+                card_num: card_num,
+                id: constraint_num,
+            })
         }
     }
 }
@@ -50,12 +56,45 @@ fn main() -> Result<(), &'static str> {
     if args.constraints.len() > 6 {
         return Err("Too many constraints provided");
     }
-    // TODO: Do the solve
+    let constraints_to_filter: HashSet<(u8, u8)> = args
+        .constraints
+        .iter()
+        .filter_map(|cc| {
+            let CardOrConstraintArg::CardConstraint {
+                inverted: true,
+                card_num,
+                id,
+            } = cc
+            else {
+                return None;
+            };
+            Some((*card_num, *id))
+        })
+        .collect();
     let solutions = turing_solve(
         args.constraints
             .iter()
-            .flat_map(<&CardOrConstraintArg as Into<Vec<Constraint>>>::into)
-            .collect_vec(),
+            .filter_map(|cc| -> Option<Vec<Constraint>> {
+                match *cc {
+                    CardOrConstraintArg::Card(num) => constraints_for_card(num),
+                    CardOrConstraintArg::CardConstraint {
+                        inverted: false,
+                        card_num,
+                        id: constraint_num,
+                    } => constraints_for_card(card_num)
+                        .and_then(|constraints| constraints.get(constraint_num as usize).cloned())
+                        .map(Constraint::into),
+                    CardOrConstraintArg::CardConstraint {
+                        inverted: true,
+                        card_num,
+                        ..
+                    } => constraints_for_card(card_num),
+                }
+            })
+            .flat_map(|vc| vc)
+            .filter(|cc| !constraints_to_filter.contains(&(cc.id.card, cc.id.idx)))
+            .dedup_by(|x, y| x.id.eq(&y.id))
+            .collect(),
     );
     if !solutions.is_empty() {
         for solution in &solutions {
@@ -73,20 +112,4 @@ fn main() -> Result<(), &'static str> {
     println!("{}", decision_tree);
 
     Ok(())
-}
-
-impl Into<Vec<Constraint>> for &CardOrConstraintArg {
-    fn into(self) -> Vec<Constraint> {
-        match self {
-            CardOrConstraintArg::Card(num) => constraints_for_card(*num).unwrap(),
-            CardOrConstraintArg::CardConstraint(card_num, constraint_num) => {
-                constraints_for_card(*card_num)
-                    .unwrap()
-                    .get(*constraint_num as usize)
-                    .copied()
-                    .into_iter()
-                    .collect()
-            }
-        }
-    }
 }

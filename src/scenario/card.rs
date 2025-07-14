@@ -6,7 +6,7 @@ use crate::scenario::{
 };
 
 #[derive(Clone, Debug)]
-pub(crate) struct Card {
+pub struct Card {
     pub(crate) constraints: Vec<Constraint>,
 }
 
