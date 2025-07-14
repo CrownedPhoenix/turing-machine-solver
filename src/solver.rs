@@ -1,6 +1,6 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
-use super::scenario::constraint::Constraint;
+pub use super::scenario::constraint::Constraint;
 use crate::scenario::{card::Card, code::Code};
 use itertools::Itertools;
 use log::debug;
@@ -50,46 +50,36 @@ mod test {
     }
 }
 
-#[derive(Clone, Copy)]
-pub enum CardOrConstraint {
-    Card(u8),
-    CardConstraint(u8, u8),
-}
-
 #[derive(Clone)]
 struct ConstraintGroup {
     constraints: Vec<Constraint>,
 }
 
-impl Into<ConstraintGroup> for Card {
-    fn into(self) -> ConstraintGroup {
-        ConstraintGroup {
-            constraints: self.constraints,
-        }
+impl Into<Vec<Constraint>> for Card {
+    fn into(self) -> Vec<Constraint> {
+        self.constraints
     }
 }
-impl Into<ConstraintGroup> for Constraint {
-    fn into(self) -> ConstraintGroup {
-        ConstraintGroup {
-            constraints: vec![self],
-        }
+impl Into<Vec<Constraint>> for Constraint {
+    fn into(self) -> Vec<Constraint> {
+        vec![self]
     }
 }
 
-pub fn turing_solve(
-    constraints: Vec<CardOrConstraint>
-) -> Vec<Solution> {
-    let constraint_groups: Vec<ConstraintGroup> = constraints.iter()
-        .filter_map(|x| -> Option<ConstraintGroup> {
-            match *x {
-                CardOrConstraint::Card(num) => Card::try_from(num).map(Card::into).ok(),
-                CardOrConstraint::CardConstraint(card_num, constraint_num) => {
-                    Card::try_from(card_num)
-                        .ok()
-                        .and_then(|card| card.constraints.get(constraint_num as usize).cloned())
-                        .map(Constraint::into)
-                }
-            }
+pub fn constraints_for_card(card_num: u8) -> Option<Vec<Constraint>> {
+    Card::try_from(card_num).ok().map(|c| c.constraints)
+}
+
+pub fn turing_solve(constraints: Vec<Constraint>) -> Vec<Solution> {
+    let constraint_groups: Vec<ConstraintGroup> = constraints
+        .iter()
+        .fold(HashMap::<u8, Vec<Constraint>>::new(), |mut map, c| {
+            map.entry(c.id.card).or_insert(vec![]).push(*c);
+            map
+        })
+        .into_values()
+        .map(|constraints| ConstraintGroup {
+            constraints: constraints,
         })
         .collect();
     constraint_groups

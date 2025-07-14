@@ -2,7 +2,8 @@ use clap::Parser;
 use itertools::Itertools;
 use std::str::FromStr;
 use turing_solve::{
-    guess_sequence::solver::guess_sequence, solver::CardOrConstraint, solver::turing_solve,
+    guess_sequence::solver::guess_sequence,
+    solver::{Constraint, constraints_for_card, turing_solve},
 };
 
 #[derive(Parser)]
@@ -51,26 +52,10 @@ fn main() -> Result<(), &'static str> {
     }
     // TODO: Do the solve
     let solutions = turing_solve(
-        vec![
         args.constraints
-            .get(0)
-            .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into),
-        args.constraints
-            .get(1)
-            .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into),
-        args.constraints
-            .get(2)
-            .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into),
-        args.constraints
-            .get(3)
-            .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into),
-        args.constraints
-            .get(4)
-            .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into),
-        args.constraints
-            .get(5)
-            .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into)
-        ].iter().filter_map(|e| *e).collect_vec()
+            .iter()
+            .flat_map(<&CardOrConstraintArg as Into<Vec<Constraint>>>::into)
+            .collect_vec(),
     );
     if !solutions.is_empty() {
         for solution in &solutions {
@@ -90,12 +75,17 @@ fn main() -> Result<(), &'static str> {
     Ok(())
 }
 
-impl Into<CardOrConstraint> for &CardOrConstraintArg {
-    fn into(self) -> CardOrConstraint {
+impl Into<Vec<Constraint>> for &CardOrConstraintArg {
+    fn into(self) -> Vec<Constraint> {
         match self {
-            CardOrConstraintArg::Card(num) => CardOrConstraint::Card(*num),
+            CardOrConstraintArg::Card(num) => constraints_for_card(*num).unwrap(),
             CardOrConstraintArg::CardConstraint(card_num, constraint_num) => {
-                CardOrConstraint::CardConstraint(*card_num, *constraint_num)
+                constraints_for_card(*card_num)
+                    .unwrap()
+                    .get(*constraint_num as usize)
+                    .copied()
+                    .into_iter()
+                    .collect()
             }
         }
     }
