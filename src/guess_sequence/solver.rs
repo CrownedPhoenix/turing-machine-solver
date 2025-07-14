@@ -9,7 +9,7 @@ use crate::{
 };
 
 /// Determine the best possible guess sequences that converge to a solution.
-pub fn guess_sequence(solutions: &Vec<Solution>) -> DecisionTree {
+pub fn guess_sequence(solutions: &Vec<Solution>) -> Option<DecisionTree> {
     let relevant_constraints: HashSet<&Constraint> = solutions.iter().fold(
         HashSet::<&Constraint>::new(),
         |mut constraints, solution| {
@@ -19,11 +19,12 @@ pub fn guess_sequence(solutions: &Vec<Solution>) -> DecisionTree {
     );
 
     let mut decisions: HashMap<Decision, Branch> = HashMap::new();
-    let first_best_guess: &Constraint = best_guess(
+    let Some(first_best_guess) = best_guess(
         &relevant_constraints,
         &solutions.iter().map(|s| s).collect_vec(),
-    )
-    .unwrap();
+    ) else {
+        return None
+    };
 
     let available_solutions: Vec<&Solution> = solutions.iter().map(|s| s).collect_vec();
 
@@ -99,10 +100,10 @@ pub fn guess_sequence(solutions: &Vec<Solution>) -> DecisionTree {
         }
     }
 
-    return DecisionTree {
+    return Some(DecisionTree {
         roots: roots,
         decisions: decisions,
-    };
+    });
 }
 
 /// The difference between the number of solutions with

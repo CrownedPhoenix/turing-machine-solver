@@ -77,9 +77,10 @@ fn main() -> Result<(), &'static str> {
         println!("{}", solution)
     }
 
+    let Some(decision_tree) = guess_sequence(&solutions) else {
+        return Err("Could not construct decision tree");
+    };
     println!("\n------ Decision tree -----\n");
-
-    let decision_tree = guess_sequence(&solutions);
     println!("{}", decision_tree);
 
     Ok(())
