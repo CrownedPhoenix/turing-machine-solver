@@ -72,9 +72,13 @@ fn main() -> Result<(), &'static str> {
             .map(<&CardOrConstraintArg as Into<CardOrConstraint>>::into)
         ].iter().filter_map(|e| *e).collect_vec()
     );
-    println!("------ Possible solutions -----\n");
-    for solution in &solutions {
-        println!("{}", solution)
+    if !solutions.is_empty() {
+        for solution in &solutions {
+            println!("{}", solution)
+        }
+    } else {
+        println!("----- No possible solutions -----");
+        return Ok(());
     }
 
     let Some(decision_tree) = guess_sequence(&solutions) else {
